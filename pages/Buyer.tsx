@@ -192,16 +192,16 @@ const Buyer: React.FC = () => {
                 <div className="pt-4">
                   <input 
                     className="w-full cursor-pointer" 
-                    max="10000" 
+                    max="150" 
                     min="0" 
-                    step="100" 
+                    step="1" 
                     type="range" 
                     value={priceRange}
                     onChange={(e) => setPriceRange(parseInt(e.target.value))}
                   />
                   <div className="flex justify-between mt-2 text-[10px] text-gray-500 font-mono">
                     <span>₹0</span>
-                    <span>₹10,000+</span>
+                    <span>₹150+</span>
                   </div>
                 </div>
               </div>
