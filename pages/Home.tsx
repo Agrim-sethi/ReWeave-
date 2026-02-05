@@ -21,7 +21,7 @@ const Home: React.FC = () => {
     <div className="relative">
       <header className="relative min-h-screen flex flex-col justify-center items-center px-4 pt-20">
         <div className="absolute inset-0 z-0">
-          <img alt="Rack of clothes showing fabric textures" className="w-full h-full object-cover opacity-40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWWxRPqKpt-BHWyT4o0tQP2PDUeu_SLyuJ6nEHxpM2HzumxgBS-WIqXyU1uMRam8tQN2Nl52pPMdxR7drZkhmtFHfBDzstlczTEBdETz1te8eNowHUYabX45JUf_C1CwLUsRX9V6R5jXLQNyzUVu1XDeufZ5dgCK9n5954iu8hXLXRjubLmIygEoIaH3bsPBsJGzjHbgsRBIfijvlTAux08ZwTtTEoDgaTFRuB1C3c1uxnwt79Mu8ZYWWL6c5WCMJX48TFime9"/>
+          <img alt="Rack of clothes showing fabric textures" className="w-full h-full object-cover opacity-40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWWxRPqKpt-BHWyT4o0tQP2PDUeu_SLyuJ6nEHxpM2HzumxgBS-WIqXyU1uMRam8tQN2Nl52pPMdxR7drZkhmtFHfBDzstlczTEBdETz1te8eNowHUYabX45JUf_C1CwLUsRX9V6R5jXLQNyzUVu1XDeufZ5dgCK9n5954iu8hXLXRjubLmIygEoIaH3bsPBsJGzjHbgsRBIfijvlTAux08ZwTtTEoDgaTFRuB1C3c1uxnwt79Mu8ZYWWL6c5WCMJX48TFime9" />
           <div className="absolute inset-0 bg-gradient-to-b from-deep-charcoal/80 via-deep-charcoal/90 to-deep-charcoal"></div>
         </div>
         <div className="relative z-10 max-w-6xl mx-auto text-center space-y-8">
@@ -51,14 +51,14 @@ const Home: React.FC = () => {
       <section className="py-32 bg-deep-charcoal relative">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            
+
             {/* Left Column */}
             <div className="space-y-12 reveal-on-scroll">
               <h2 className="text-5xl md:text-7xl font-black tracking-tighter leading-tight">
                 The Purpose Of <br />
                 <span className="text-accent-pink">Building ReWeave</span>
               </h2>
-              
+
               <div className="space-y-8 text-lg text-gray-400 font-light leading-relaxed">
                 <p>
                   The textile industry generates significant waste through end-of-line (EOL) fabric — small batches, discontinued designs, or irregular sizes left over at the end of production cycles.
@@ -70,13 +70,18 @@ const Home: React.FC = () => {
 
               <div className="flex gap-12 pt-4">
                 <div>
-                   <span className="block text-5xl font-black text-white mb-2">85%</span>
-                   <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Textiles Dumped</span>
+                  <span className="block text-5xl font-black text-white mb-2">10%</span>
+                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest leading-tight">EOL Textiles<br />Dumped</span>
                 </div>
                 <div className="w-px bg-white/10 h-16"></div>
                 <div>
-                   <span className="block text-5xl font-black text-white mb-2">10%</span>
-                   <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Carbon Emissions</span>
+                  <span className="block text-5xl font-black text-white mb-2">65%</span>
+                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest leading-tight">EOL Textiles sold at<br />ultra-heavy discounts</span>
+                </div>
+                <div className="w-px bg-white/10 h-16"></div>
+                <div>
+                  <span className="block text-5xl font-black text-white mb-2">25%</span>
+                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest leading-tight">EOL Textiles stored indefinitely<br />due to lack of buyer access</span>
                 </div>
               </div>
             </div>
@@ -85,35 +90,35 @@ const Home: React.FC = () => {
             <div className="space-y-6">
               {/* Card 1 */}
               <div className="bg-[#161b22] border border-white/5 p-8 rounded-[2rem] hover:bg-[#1c242e] hover:border-accent-pink/20 transition-all duration-500 reveal-on-scroll delay-100 group">
-                 <div className="w-12 h-12 rounded-full bg-accent-pink/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <span className="material-symbols-outlined text-accent-pink text-2xl">recycling</span>
-                 </div>
-                 <h3 className="text-2xl font-bold text-white mb-3">Circular Economy</h3>
-                 <p className="text-gray-400 leading-relaxed">
-                   ReWeave closes the loop by ensuring that every yard of fabric finds a purpose, reducing reliance on virgin materials.
-                 </p>
+                <div className="w-12 h-12 rounded-full bg-accent-pink/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <span className="material-symbols-outlined text-accent-pink text-2xl">recycling</span>
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">Circular Economy</h3>
+                <p className="text-gray-400 leading-relaxed">
+                  ReWeave closes the loop by ensuring that every yard of fabric finds a purpose, reducing reliance on virgin materials.
+                </p>
               </div>
 
               {/* Card 2 */}
               <div className="bg-[#161b22] border border-white/5 p-8 rounded-[2rem] hover:bg-[#1c242e] hover:border-accent-blue/20 transition-all duration-500 reveal-on-scroll delay-200 group">
-                 <div className="w-12 h-12 rounded-full bg-accent-blue/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <span className="material-symbols-outlined text-accent-blue text-2xl">hub</span>
-                 </div>
-                 <h3 className="text-2xl font-bold text-white mb-3">Intelligent Connection</h3>
-                 <p className="text-gray-400 leading-relaxed">
-                   Our algorithm matches surplus inventory with demand patterns in real-time, creating value where there was none.
-                 </p>
+                <div className="w-12 h-12 rounded-full bg-accent-blue/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <span className="material-symbols-outlined text-accent-blue text-2xl">hub</span>
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">Intelligent Connection</h3>
+                <p className="text-gray-400 leading-relaxed">
+                  Our algorithm matches surplus inventory with demand patterns in real-time, creating value where there was none.
+                </p>
               </div>
 
               {/* Card 3 */}
               <div className="bg-[#161b22] border border-white/5 p-8 rounded-[2rem] hover:bg-[#1c242e] hover:border-accent-green/20 transition-all duration-500 reveal-on-scroll delay-300 group">
-                 <div className="w-12 h-12 rounded-full bg-accent-green/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <span className="material-symbols-outlined text-accent-green text-2xl">trending_up</span>
-                 </div>
-                 <h3 className="text-2xl font-bold text-white mb-3">Data-Driven Impact</h3>
-                 <p className="text-gray-400 leading-relaxed">
-                   We provide actionable insights to help businesses understand their waste footprint and optimize procurement.
-                 </p>
+                <div className="w-12 h-12 rounded-full bg-accent-green/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <span className="material-symbols-outlined text-accent-green text-2xl">trending_up</span>
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">Data-Driven Impact</h3>
+                <p className="text-gray-400 leading-relaxed">
+                  We provide actionable insights to help businesses understand their waste footprint and optimize procurement.
+                </p>
               </div>
             </div>
 
@@ -125,12 +130,12 @@ const Home: React.FC = () => {
       <section className="relative py-32 bg-deep-charcoal overflow-hidden" id="purpose">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="mb-20 reveal-on-scroll">
-             <div className="flex items-center gap-3 mb-4">
-                <span className="material-symbols-outlined text-accent-pink text-3xl">all_inclusive</span>
-                <span className="font-bold text-white tracking-widest uppercase text-sm">Our Mission</span>
-             </div>
-             <h2 className="text-6xl md:text-8xl font-black tracking-tighter text-white mb-6">Impact <span className="text-accent-green">Planned</span></h2>
-             <p className="text-xl text-gray-400 font-light max-w-2xl">Measurable outcomes for every participant in the ecosystem.</p>
+            <div className="flex items-center gap-3 mb-4">
+              <span className="material-symbols-outlined text-accent-pink text-3xl">all_inclusive</span>
+              <span className="font-bold text-white tracking-widest uppercase text-sm">Our Mission</span>
+            </div>
+            <h2 className="text-6xl md:text-8xl font-black tracking-tighter text-white mb-6">Impact <span className="text-accent-green">Planned</span></h2>
+            <p className="text-xl text-gray-400 font-light max-w-2xl">Measurable outcomes for every participant in the ecosystem.</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -139,20 +144,20 @@ const Home: React.FC = () => {
               <span className="text-accent-green text-xs font-bold uppercase tracking-widest mb-4 block">01. Sellers</span>
               <h3 className="text-3xl font-bold text-white mb-8">For Textile Businesses</h3>
               <ul className="space-y-8">
-                <ImpactItem 
-                  icon="monetization_on" 
-                  title="Revenue Recovery" 
-                  desc="Monetize leftover stock that would otherwise be discarded." 
+                <ImpactItem
+                  icon="monetization_on"
+                  title="Revenue Recovery"
+                  desc="Monetize leftover stock that would otherwise be discarded."
                 />
-                <ImpactItem 
-                  icon="warehouse" 
-                  title="Storage Cost Reduction" 
-                  desc="Reduce holding time and associated costs by up to 60%." 
+                <ImpactItem
+                  icon="warehouse"
+                  title="Storage Cost Reduction"
+                  desc="Reduce holding time and associated costs by up to 60%."
                 />
-                <ImpactItem 
-                  icon="public" 
-                  title="Sustainability Branding" 
-                  desc="Enhance CSR efforts by dramatically reducing textile waste." 
+                <ImpactItem
+                  icon="public"
+                  title="Sustainability Branding"
+                  desc="Enhance CSR efforts by dramatically reducing textile waste."
                 />
               </ul>
             </div>
@@ -162,20 +167,20 @@ const Home: React.FC = () => {
               <span className="text-accent-blue text-xs font-bold uppercase tracking-widest mb-4 block">02. Buyers</span>
               <h3 className="text-3xl font-bold text-white mb-8">For Small Buyers</h3>
               <ul className="space-y-8">
-                <ImpactItem 
-                  icon="shopping_bag" 
-                  title="Affordable Access" 
-                  desc="Purchase high-quality fabrics in small lots at competitive prices." 
+                <ImpactItem
+                  icon="shopping_bag"
+                  title="Affordable Access"
+                  desc="Purchase high-quality fabrics in small lots at competitive prices."
                 />
-                <ImpactItem 
-                  icon="palette" 
-                  title="Design Flexibility" 
-                  desc="Work with unique, limited-edition materials unavailable elsewhere." 
+                <ImpactItem
+                  icon="palette"
+                  title="Design Flexibility"
+                  desc="Work with unique, limited-edition materials unavailable elsewhere."
                 />
-                <ImpactItem 
-                  icon="verified" 
-                  title="Quality Verified" 
-                  desc="Every listing is verified for quality and material accuracy." 
+                <ImpactItem
+                  icon="verified"
+                  title="Quality Verified"
+                  desc="Every listing is verified for quality and material accuracy."
                 />
               </ul>
             </div>
@@ -185,20 +190,20 @@ const Home: React.FC = () => {
               <span className="text-accent-pink text-xs font-bold uppercase tracking-widest mb-4 block">03. Planet</span>
               <h3 className="text-3xl font-bold text-white mb-8">For The Planet</h3>
               <ul className="space-y-8">
-                <ImpactItem 
-                  icon="water_drop" 
-                  title="Water Preservation" 
-                  desc="Saved 2,000L of water per kg of fabric reused vs produced." 
+                <ImpactItem
+                  icon="water_drop"
+                  title="Water Preservation"
+                  desc="Saved 2,000L of water per kg of fabric reused vs produced."
                 />
-                <ImpactItem 
-                  icon="co2" 
-                  title="Carbon Reduction" 
-                  desc="Significant reduction in CO2 footprint from avoidance." 
+                <ImpactItem
+                  icon="co2"
+                  title="Carbon Reduction"
+                  desc="Significant reduction in CO2 footprint from avoidance."
                 />
-                <ImpactItem 
-                  icon="delete_forever" 
-                  title="Landfill Diversion" 
-                  desc="Keeping non-biodegradable synthetics out of our earth." 
+                <ImpactItem
+                  icon="delete_forever"
+                  title="Landfill Diversion"
+                  desc="Keeping non-biodegradable synthetics out of our earth."
                 />
               </ul>
             </div>
