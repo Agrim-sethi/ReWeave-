@@ -177,11 +177,6 @@ const Home: React.FC = () => {
                   title="Design Flexibility"
                   desc="Work with unique, limited-edition materials unavailable elsewhere."
                 />
-                <ImpactItem
-                  icon="verified"
-                  title="Quality Verified"
-                  desc="Every listing is verified for quality and material accuracy."
-                />
               </ul>
             </div>
 
