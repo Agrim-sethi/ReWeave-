@@ -192,9 +192,9 @@ const Buyer: React.FC = () => {
                 <div className="pt-4">
                   <input 
                     className="w-full cursor-pointer" 
-                    max="1500" 
+                    max="150" 
                     min="0" 
-                    step="10" 
+                    step="1" 
                     type="range" 
                     value={priceRange}
                     onChange={(e) => setPriceRange(parseInt(e.target.value))}
