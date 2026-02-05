@@ -70,6 +70,7 @@ export const Navbar: React.FC = () => {
               <span className="font-bold text-xl tracking-tight text-white">ReWeave</span>
               {path.includes('seller') && <span className="text-[10px] text-gray-400 uppercase tracking-widest">Seller Hub</span>}
               {path.includes('buyer') && <span className="text-[10px] text-gray-400 uppercase tracking-widest">Marketplace</span>}
+              {path.includes('analytics') && <span className="text-[10px] text-gray-400 uppercase tracking-widest">Analytics</span>}
               {path.includes('profile') && <span className="text-[10px] text-gray-400 uppercase tracking-widest">Business Hub</span>}
             </div>
           </Link>
