@@ -162,7 +162,7 @@ const Seller: React.FC = () => {
 
   const analyzeImage = async (base64Image: string) => {
     setAnalyzing(true);
-    showNotification("AI is analyzing your fabric...", "info");
+    showNotification("Please wait, AI is analyzing your fabric...", "info");
 
     // Extract base64 data only (remove data:image/jpeg;base64, prefix)
     const base64Data = base64Image.split(',')[1];
