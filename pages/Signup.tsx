@@ -5,7 +5,7 @@ import { authService } from '../services/authService';
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
-  const { setCurrentUser, showNotification } = useAppContext();
+  const { setCurrentUser, showNotification, setShowProfileSetup } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [userType, setUserType] = useState('Buyer');
 
@@ -17,6 +17,7 @@ const Signup: React.FC = () => {
 
       if (result.success && result.user) {
         await setCurrentUser(result.user);
+        setShowProfileSetup(true);
         showNotification("Account created successfully!", "success");
         navigate('/');
       } else {
