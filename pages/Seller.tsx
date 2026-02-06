@@ -93,7 +93,7 @@ const Seller: React.FC = () => {
         listings
       );
       setPriceRecommendation(prediction);
-      
+
       const demand = mlService.predictDemand(
         formData.material,
         formData.location,
@@ -162,7 +162,7 @@ const Seller: React.FC = () => {
 
   const analyzeImage = async (base64Image: string) => {
     setAnalyzing(true);
-    showNotification("Please wait, AI is analyzing your fabric...", "info");
+    showNotification("AI is analyzing your fabric...", "info");
 
     // Extract base64 data only (remove data:image/jpeg;base64, prefix)
     const base64Data = base64Image.split(',')[1];
@@ -266,8 +266,8 @@ const Seller: React.FC = () => {
       <div className="max-w-4xl mx-auto" ref={formTopRef}>
         <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <h1 className="text-5xl md:text-6xl font-black tracking-tighter mb-4">Seller <span className="text-accent-pink">Studio</span></h1>
-            <p className="text-gray-400 text-lg">Upload your surplus fabric. Our AI helps you list it in seconds.</p>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter mb-4">Seller <span className="text-accent-pink">Studio</span></h1>
+            <p className="text-gray-400 text-base sm:text-lg">Upload your surplus fabric. Our AI helps you list it in seconds.</p>
           </div>
           {editingId && (
             <button
@@ -462,7 +462,7 @@ const Seller: React.FC = () => {
                     {Math.round(priceRecommendation.confidence * 100)}% confidence
                   </span>
                 </div>
-                
+
                 <div className="grid grid-cols-3 gap-3">
                   <div className="bg-black/20 rounded-xl p-3 text-center">
                     <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Min</p>
@@ -492,20 +492,19 @@ const Seller: React.FC = () => {
                 {/* Price Factors */}
                 <div className="flex flex-wrap gap-2 pt-2 border-t border-white/10">
                   {priceRecommendation.factors.map((factor, idx) => (
-                    <span 
-                      key={idx} 
-                      className={`text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wider ${
-                        factor.impact === 'positive' ? 'bg-green-500/20 text-green-400' :
-                        factor.impact === 'negative' ? 'bg-red-500/20 text-red-400' :
-                        factor.impact === 'discount' ? 'bg-blue-500/20 text-blue-400' :
-                        factor.impact === 'premium' ? 'bg-purple-500/20 text-purple-400' :
-                        'bg-white/10 text-gray-400'
-                      }`}
+                    <span
+                      key={idx}
+                      className={`text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wider ${factor.impact === 'positive' ? 'bg-green-500/20 text-green-400' :
+                          factor.impact === 'negative' ? 'bg-red-500/20 text-red-400' :
+                            factor.impact === 'discount' ? 'bg-blue-500/20 text-blue-400' :
+                              factor.impact === 'premium' ? 'bg-purple-500/20 text-purple-400' :
+                                'bg-white/10 text-gray-400'
+                        }`}
                     >
-                      {factor.name}: {factor.impact === 'primary' ? `₹${factor.value}` : 
+                      {factor.name}: {factor.impact === 'primary' ? `₹${factor.value}` :
                         factor.impact === 'discount' ? `-${factor.value}%` :
-                        factor.impact === 'premium' ? `+${factor.value}%` :
-                        factor.value > 0 ? `+${factor.value}%` : `${factor.value}%`}
+                          factor.impact === 'premium' ? `+${factor.value}%` :
+                            factor.value > 0 ? `+${factor.value}%` : `${factor.value}%`}
                     </span>
                   ))}
                 </div>
@@ -519,36 +518,33 @@ const Seller: React.FC = () => {
                   <span className="material-symbols-outlined text-accent-pink">trending_up</span>
                   <h4 className="font-bold text-sm uppercase tracking-widest text-white">Market Demand</h4>
                 </div>
-                
+
                 <div className="flex items-center gap-4">
                   <div className="flex-1">
                     <div className="flex justify-between text-xs mb-1">
                       <span className="text-gray-400">Demand Score</span>
-                      <span className={`font-bold ${
-                        demandPrediction.demandScore >= 70 ? 'text-green-400' :
-                        demandPrediction.demandScore >= 40 ? 'text-yellow-400' : 'text-red-400'
-                      }`}>{demandPrediction.demandScore}/100</span>
+                      <span className={`font-bold ${demandPrediction.demandScore >= 70 ? 'text-green-400' :
+                          demandPrediction.demandScore >= 40 ? 'text-yellow-400' : 'text-red-400'
+                        }`}>{demandPrediction.demandScore}/100</span>
                     </div>
                     <div className="h-2 bg-black/30 rounded-full overflow-hidden">
-                      <div 
-                        className={`h-full rounded-full transition-all ${
-                          demandPrediction.demandScore >= 70 ? 'bg-green-500' :
-                          demandPrediction.demandScore >= 40 ? 'bg-yellow-500' : 'bg-red-500'
-                        }`}
+                      <div
+                        className={`h-full rounded-full transition-all ${demandPrediction.demandScore >= 70 ? 'bg-green-500' :
+                            demandPrediction.demandScore >= 40 ? 'bg-yellow-500' : 'bg-red-500'
+                          }`}
                         style={{ width: `${demandPrediction.demandScore}%` }}
                       />
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-col items-center px-4 border-l border-white/10">
                     <span className="text-[10px] text-gray-500 uppercase">Trend</span>
-                    <span className={`flex items-center gap-1 font-bold text-sm ${
-                      demandPrediction.trend === 'rising' ? 'text-green-400' :
-                      demandPrediction.trend === 'declining' ? 'text-red-400' : 'text-gray-400'
-                    }`}>
+                    <span className={`flex items-center gap-1 font-bold text-sm ${demandPrediction.trend === 'rising' ? 'text-green-400' :
+                        demandPrediction.trend === 'declining' ? 'text-red-400' : 'text-gray-400'
+                      }`}>
                       <span className="material-symbols-outlined text-sm">
                         {demandPrediction.trend === 'rising' ? 'trending_up' :
-                         demandPrediction.trend === 'declining' ? 'trending_down' : 'trending_flat'}
+                          demandPrediction.trend === 'declining' ? 'trending_down' : 'trending_flat'}
                       </span>
                       {demandPrediction.trend}
                     </span>
@@ -562,10 +558,9 @@ const Seller: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-[10px] text-gray-500 uppercase mb-1">Competition</p>
-                    <p className={`text-sm font-bold ${
-                      demandPrediction.competitionLevel === 'low' ? 'text-green-400' :
-                      demandPrediction.competitionLevel === 'high' ? 'text-red-400' : 'text-yellow-400'
-                    }`}>{demandPrediction.competitionLevel.charAt(0).toUpperCase() + demandPrediction.competitionLevel.slice(1)}</p>
+                    <p className={`text-sm font-bold ${demandPrediction.competitionLevel === 'low' ? 'text-green-400' :
+                        demandPrediction.competitionLevel === 'high' ? 'text-red-400' : 'text-yellow-400'
+                      }`}>{demandPrediction.competitionLevel.charAt(0).toUpperCase() + demandPrediction.competitionLevel.slice(1)}</p>
                   </div>
                 </div>
 
@@ -642,9 +637,9 @@ const Seller: React.FC = () => {
                   <div className="w-20 h-20 rounded-xl bg-white/5 overflow-hidden flex-shrink-0">
                     <img src={listing.imageUrl} alt={listing.title} className="w-full h-full object-cover" />
                   </div>
-                  <div className="flex-grow min-w-0">
-                    <h4 className="font-bold text-white truncate">{listing.title}</h4>
-                    <p className="text-xs text-gray-400 mt-1">{listing.material}</p>
+                  <div className="flex-grow min-w-0 overflow-hidden">
+                    <h4 className="font-bold text-white truncate break-words">{listing.title}</h4>
+                    <p className="text-xs text-gray-400 mt-1 truncate break-words">{listing.material}</p>
                     <p className="text-sm font-bold text-accent-green mt-1">₹{listing.pricePerUnit} <span className="text-gray-600 font-normal">/{listing.unit || 'm'}</span></p>
                   </div>
                 </div>
