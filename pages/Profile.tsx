@@ -197,7 +197,7 @@ const Profile: React.FC = () => {
   return (
     <main className="pt-32 pb-20 px-6 max-w-7xl mx-auto">
       <header className="mb-12">
-        <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4">{currentUser.type} <span className="text-accent-pink">Profile</span></h1>
+        <h1 className="text-4xl sm:text-7xl font-black tracking-tighter mb-4">{currentUser.type} <span className="text-accent-pink">Profile</span></h1>
         <div className="flex flex-wrap gap-8 items-center mt-8 bg-white/5 border border-white/10 p-8 rounded-[2.5rem]">
           <div className="flex flex-col flex-1 min-w-[200px]">
             <div className="flex items-center justify-between mb-1">
@@ -289,11 +289,11 @@ const Profile: React.FC = () => {
           </div>
         </div>
         <div className="mt-8">
-          <h2 className="text-3xl md:text-4xl font-black tracking-tighter mb-6">Account <span className="text-accent-pink">Info</span></h2>
-          <div className="flex flex-wrap gap-8 items-center bg-white/5 border border-white/10 p-8 rounded-[2.5rem]">
-            <div className="flex flex-col">
+          <h2 className="text-2xl sm:text-4xl font-black tracking-tighter mb-6">Account <span className="text-accent-pink">Info</span></h2>
+          <div className="flex flex-wrap gap-8 items-center bg-white/5 border border-white/10 p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem]">
+            <div className="flex flex-col flex-1 min-w-[200px] overflow-hidden">
               <span className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-1">Email Address</span>
-              <span className="text-2xl font-black text-white tracking-tight">{currentUser.email}</span>
+              <span className="text-lg sm:text-2xl font-black text-white tracking-tight break-all">{currentUser.email}</span>
             </div>
             <div className="h-12 w-px bg-white/10 hidden md:block"></div>
             <div className="flex flex-col flex-1">
