@@ -135,10 +135,10 @@ const Analytics: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none mb-4">
+            <h1 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter leading-none mb-4">
               Market <br /><span className="text-accent-pink">Analytics</span>
             </h1>
-            <p className="text-xl text-gray-400 font-light max-w-xl">Real-time insights from active marketplace data.</p>
+            <p className="text-lg sm:text-xl text-gray-400 font-light max-w-xl">Real-time insights from active marketplace data.</p>
           </div>
           <div className="flex gap-3">
             <StatsCard label="Total Listings" value={aggregates.totalListings.toString()} color="text-accent-green" />
@@ -207,7 +207,7 @@ const Analytics: React.FC = () => {
               <div className="bg-black/30 rounded-2xl p-5 border border-white/5">
                 <div className="flex items-center gap-2 mb-3">
                   <span className={`material-symbols-outlined text-xl ${marketInsights.demandTrend === 'increasing' ? 'text-green-400' :
-                      marketInsights.demandTrend === 'decreasing' ? 'text-red-400' : 'text-yellow-400'
+                    marketInsights.demandTrend === 'decreasing' ? 'text-red-400' : 'text-yellow-400'
                     }`}>
                     {marketInsights.demandTrend === 'increasing' ? 'trending_up' :
                       marketInsights.demandTrend === 'decreasing' ? 'trending_down' : 'trending_flat'}
@@ -215,7 +215,7 @@ const Analytics: React.FC = () => {
                   <span className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Demand Trend</span>
                 </div>
                 <p className={`text-3xl font-black capitalize ${marketInsights.demandTrend === 'increasing' ? 'text-green-400' :
-                    marketInsights.demandTrend === 'decreasing' ? 'text-red-400' : 'text-yellow-400'
+                  marketInsights.demandTrend === 'decreasing' ? 'text-red-400' : 'text-yellow-400'
                   }`}>{marketInsights.demandTrend}</p>
                 <p className="text-xs text-gray-400 mt-1">Market Direction</p>
               </div>
@@ -249,10 +249,10 @@ const Analytics: React.FC = () => {
                 {materialTrends.slice(0, 4).map((trend, idx) => (
                   <div key={idx} className="bg-black/20 rounded-2xl p-4 border border-white/5 flex items-center gap-4">
                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${trend.trend === 'rising' ? 'bg-green-500/20' :
-                        trend.trend === 'falling' ? 'bg-red-500/20' : 'bg-yellow-500/20'
+                      trend.trend === 'falling' ? 'bg-red-500/20' : 'bg-yellow-500/20'
                       }`}>
                       <span className={`material-symbols-outlined ${trend.trend === 'rising' ? 'text-green-400' :
-                          trend.trend === 'falling' ? 'text-red-400' : 'text-yellow-400'
+                        trend.trend === 'falling' ? 'text-red-400' : 'text-yellow-400'
                         }`}>
                         {trend.trend === 'rising' ? 'trending_up' :
                           trend.trend === 'falling' ? 'trending_down' : 'trending_flat'}
@@ -269,7 +269,7 @@ const Analytics: React.FC = () => {
                       <div className="flex justify-between mt-1">
                         <span className="text-xs text-gray-500">
                           Demand: <span className={`font-bold ${trend.demandScore >= 70 ? 'text-green-400' :
-                              trend.demandScore >= 40 ? 'text-yellow-400' : 'text-red-400'
+                            trend.demandScore >= 40 ? 'text-yellow-400' : 'text-red-400'
                             }`}>{trend.demandScore}%</span>
                         </span>
                         <span className="text-xs text-gray-500">
@@ -291,8 +291,8 @@ const Analytics: React.FC = () => {
                   {marketInsights.recommendations.map((rec, idx) => (
                     <div key={idx} className="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
                       <span className={`material-symbols-outlined text-xl mt-0.5 ${rec.type === 'opportunity' ? 'text-green-400' :
-                          rec.type === 'warning' ? 'text-yellow-400' :
-                            rec.type === 'action' ? 'text-blue-400' : 'text-gray-400'
+                        rec.type === 'warning' ? 'text-yellow-400' :
+                          rec.type === 'action' ? 'text-blue-400' : 'text-gray-400'
                         }`}>
                         {rec.type === 'opportunity' ? 'rocket_launch' :
                           rec.type === 'warning' ? 'warning' :
@@ -301,8 +301,8 @@ const Analytics: React.FC = () => {
                       <div>
                         <p className="text-sm text-white font-medium">{rec.message}</p>
                         <span className={`text-[10px] uppercase tracking-wider font-bold mt-1 inline-block px-2 py-0.5 rounded-full ${rec.type === 'opportunity' ? 'bg-green-500/20 text-green-400' :
-                            rec.type === 'warning' ? 'bg-yellow-500/20 text-yellow-400' :
-                              rec.type === 'action' ? 'bg-blue-500/20 text-blue-400' : 'bg-gray-500/20 text-gray-400'
+                          rec.type === 'warning' ? 'bg-yellow-500/20 text-yellow-400' :
+                            rec.type === 'action' ? 'bg-blue-500/20 text-blue-400' : 'bg-gray-500/20 text-gray-400'
                           }`}>{rec.type}</span>
                       </div>
                     </div>
@@ -423,9 +423,9 @@ const Analytics: React.FC = () => {
 };
 
 const StatsCard: React.FC<{ label: string; value: string; color: string }> = ({ label, value, color }) => (
-  <div className="bg-charcoal/40 border border-white/10 rounded-2xl p-4 flex flex-col min-w-[160px]">
+  <div className="bg-charcoal/40 border border-white/10 rounded-2xl p-4 flex flex-col min-w-[140px] sm:min-w-[160px]">
     <span className="text-xs text-gray-500 uppercase tracking-widest font-bold">{label}</span>
-    <span className={`text-3xl font-black ${color}`}>{value}</span>
+    <span className={`text-xl sm:text-3xl font-black ${color}`}>{value}</span>
   </div>
 );
 
