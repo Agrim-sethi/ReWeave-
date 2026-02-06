@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
-import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import React from 'react';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import ProfileSetupModal from './components/ProfileSetupModal';
 import { AppProvider } from './context/AppContext';
+import { useAppContext } from './context/AppContext';
 import { Navbar } from './components/Navbar';
 import { NotificationBanner } from './components/NotificationBanner';
 import Home from './pages/Home';
@@ -11,24 +13,13 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
 
-// Component to scroll to top on route change
-const ScrollToTop: React.FC = () => {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
-};
-
 const App: React.FC = () => {
   return (
     <AppProvider>
       <Router>
-        <ScrollToTop />
         <div className="min-h-screen bg-deep-charcoal text-white font-body relative">
           <NotificationBanner />
+          <ProfileSetupModal />
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
