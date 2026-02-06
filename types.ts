@@ -21,4 +21,5 @@ export interface User {
   type: string;
   password?: string; // For simulation purposes only
   avatarUrl?: string;
+  isProfileSetupComplete?: boolean;
 }
