@@ -180,7 +180,7 @@ const Analytics: React.FC = () => {
         </section>
 
         {/* AI-Powered Market Insights */}
-        <section className="bg-gradient-to-br from-accent-pink/10 via-charcoal/30 to-accent-green/10 border border-accent-pink/30 rounded-[2.5rem] p-10 relative overflow-hidden">
+        <section className="bg-gradient-to-br from-accent-pink/10 via-charcoal/30 to-accent-green/10 border border-accent-pink/30 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-accent-pink/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="relative z-10">
             <div className="flex items-center gap-3 mb-10">
@@ -194,50 +194,50 @@ const Analytics: React.FC = () => {
             </div>
 
             {/* Key Metrics Row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
-              <div className="bg-black/30 rounded-2xl p-5 border border-white/5">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-10">
+              <div className="bg-black/30 rounded-2xl p-4 sm:p-5 border border-white/5 flex flex-col justify-between">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="material-symbols-outlined text-accent-green text-xl">monitoring</span>
-                  <span className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Market Health</span>
+                  <span className="material-symbols-outlined text-accent-green text-lg sm:text-xl">monitoring</span>
+                  <span className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-widest font-bold truncate">Health</span>
                 </div>
-                <p className="text-3xl font-black text-accent-green">{marketInsights.marketHealthScore}%</p>
-                <p className="text-xs text-gray-400 mt-1">Overall Score</p>
+                <p className="text-2xl sm:text-3xl font-black text-accent-green">{marketInsights.marketHealthScore}%</p>
+                <p className="text-[10px] text-gray-400 mt-1">Overall Score</p>
               </div>
 
-              <div className="bg-black/30 rounded-2xl p-5 border border-white/5">
+              <div className="bg-black/30 rounded-2xl p-4 sm:p-5 border border-white/5 flex flex-col justify-between">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className={`material-symbols-outlined text-xl ${marketInsights.demandTrend === 'increasing' ? 'text-green-400' :
+                  <span className={`material-symbols-outlined text-lg sm:text-xl ${marketInsights.demandTrend === 'increasing' ? 'text-green-400' :
                     marketInsights.demandTrend === 'decreasing' ? 'text-red-400' : 'text-yellow-400'
                     }`}>
                     {marketInsights.demandTrend === 'increasing' ? 'trending_up' :
                       marketInsights.demandTrend === 'decreasing' ? 'trending_down' : 'trending_flat'}
                   </span>
-                  <span className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Demand Trend</span>
+                  <span className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-widest font-bold truncate">Demand</span>
                 </div>
-                <p className={`text-3xl font-black capitalize ${marketInsights.demandTrend === 'increasing' ? 'text-green-400' :
+                <p className={`text-xl sm:text-3xl font-black capitalize truncate ${marketInsights.demandTrend === 'increasing' ? 'text-green-400' :
                   marketInsights.demandTrend === 'decreasing' ? 'text-red-400' : 'text-yellow-400'
                   }`}>{marketInsights.demandTrend}</p>
-                <p className="text-xs text-gray-400 mt-1">Market Direction</p>
+                <p className="text-[10px] text-gray-400 mt-1">Direction</p>
               </div>
 
-              <div className="bg-black/30 rounded-2xl p-5 border border-white/5">
+              <div className="bg-black/30 rounded-2xl p-4 sm:p-5 border border-white/5 flex flex-col justify-between">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="material-symbols-outlined text-accent-blue text-xl">percent</span>
-                  <span className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Avg Price Change</span>
+                  <span className="material-symbols-outlined text-accent-blue text-lg sm:text-xl">percent</span>
+                  <span className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-widest font-bold truncate">Change</span>
                 </div>
-                <p className={`text-3xl font-black ${marketInsights.priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                <p className={`text-2xl sm:text-3xl font-black ${marketInsights.priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                   {marketInsights.priceChange >= 0 ? '+' : ''}{marketInsights.priceChange}%
                 </p>
-                <p className="text-xs text-gray-400 mt-1">vs. Last Month</p>
+                <p className="text-[10px] text-gray-400 mt-1">Month Change</p>
               </div>
 
-              <div className="bg-black/30 rounded-2xl p-5 border border-white/5">
+              <div className="bg-black/30 rounded-2xl p-4 sm:p-5 border border-white/5 flex flex-col justify-between">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="material-symbols-outlined text-accent-purple text-xl">diamond</span>
-                  <span className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Top Material</span>
+                  <span className="material-symbols-outlined text-accent-purple text-lg sm:text-xl">diamond</span>
+                  <span className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-widest font-bold truncate">Top</span>
                 </div>
-                <p className="text-2xl font-black text-accent-purple truncate">{marketInsights.topMaterial}</p>
-                <p className="text-xs text-gray-400 mt-1">Highest Demand</p>
+                <p className="text-xl sm:text-2xl font-black text-accent-purple truncate">{marketInsights.topMaterial}</p>
+                <p className="text-[10px] text-gray-400 mt-1">High Demand</p>
               </div>
             </div>
 
@@ -258,10 +258,10 @@ const Analytics: React.FC = () => {
                           trend.trend === 'falling' ? 'trending_down' : 'trending_flat'}
                       </span>
                     </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center">
-                        <h4 className="font-bold text-white">{trend.material}</h4>
-                        <span className={`text-sm font-bold ${trend.priceChangePercent >= 0 ? 'text-green-400' : 'text-red-400'
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-center gap-2">
+                        <h4 className="font-bold text-white text-sm sm:text-base truncate">{trend.material}</h4>
+                        <span className={`text-xs sm:text-sm font-bold flex-shrink-0 ${trend.priceChangePercent >= 0 ? 'text-green-400' : 'text-red-400'
                           }`}>
                           {trend.priceChangePercent >= 0 ? '+' : ''}{trend.priceChangePercent}%
                         </span>
@@ -298,9 +298,9 @@ const Analytics: React.FC = () => {
                           rec.type === 'warning' ? 'warning' :
                             rec.type === 'action' ? 'bolt' : 'info'}
                       </span>
-                      <div>
-                        <p className="text-sm text-white font-medium">{rec.message}</p>
-                        <span className={`text-[10px] uppercase tracking-wider font-bold mt-1 inline-block px-2 py-0.5 rounded-full ${rec.type === 'opportunity' ? 'bg-green-500/20 text-green-400' :
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs sm:text-sm text-white font-medium break-words leading-tight">{rec.message}</p>
+                        <span className={`text-[9px] uppercase tracking-wider font-bold mt-2 inline-block px-2 py-0.5 rounded-full ${rec.type === 'opportunity' ? 'bg-green-500/20 text-green-400' :
                           rec.type === 'warning' ? 'bg-yellow-500/20 text-yellow-400' :
                             rec.type === 'action' ? 'bg-blue-500/20 text-blue-400' : 'bg-gray-500/20 text-gray-400'
                           }`}>{rec.type}</span>
