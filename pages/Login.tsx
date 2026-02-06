@@ -5,7 +5,7 @@ import { authService } from '../services/authService';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const { setCurrentUser, showNotification } = useAppContext();
+  const { setCurrentUser, showNotification, setShowProfileSetup } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleGoogleSignIn = async () => {
@@ -16,6 +16,7 @@ const Login: React.FC = () => {
 
       if (result.success && result.user) {
         await setCurrentUser(result.user);
+        setShowProfileSetup(true);
         showNotification("Welcome back!", "success");
         navigate('/');
       } else {
