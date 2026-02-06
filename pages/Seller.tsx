@@ -463,18 +463,18 @@ const Seller: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-black/20 rounded-xl p-3 text-center">
-                    <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Min</p>
-                    <p className="text-lg font-bold text-white">₹{priceRecommendation.minPrice}</p>
+                <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                  <div className="bg-black/20 rounded-xl p-2 sm:p-3 text-center">
+                    <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider mb-1">Min</p>
+                    <p className="text-sm sm:text-lg font-bold text-white">₹{priceRecommendation.minPrice}</p>
                   </div>
-                  <div className="bg-accent-green/20 rounded-xl p-3 text-center border border-accent-green/30">
-                    <p className="text-xs text-accent-green uppercase tracking-wider mb-1">Suggested</p>
-                    <p className="text-xl font-black text-accent-green">₹{priceRecommendation.suggestedPrice}</p>
+                  <div className="bg-accent-green/20 rounded-xl p-2 sm:p-3 text-center border border-accent-green/30">
+                    <p className="text-[10px] sm:text-xs text-accent-green uppercase tracking-wider mb-1">Suggested</p>
+                    <p className="text-base sm:text-xl font-black text-accent-green">₹{priceRecommendation.suggestedPrice}</p>
                   </div>
-                  <div className="bg-black/20 rounded-xl p-3 text-center">
-                    <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Max</p>
-                    <p className="text-lg font-bold text-white">₹{priceRecommendation.maxPrice}</p>
+                  <div className="bg-black/20 rounded-xl p-2 sm:p-3 text-center">
+                    <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider mb-1">Max</p>
+                    <p className="text-sm sm:text-lg font-bold text-white">₹{priceRecommendation.maxPrice}</p>
                   </div>
                 </div>
 
@@ -495,10 +495,10 @@ const Seller: React.FC = () => {
                     <span
                       key={idx}
                       className={`text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wider ${factor.impact === 'positive' ? 'bg-green-500/20 text-green-400' :
-                          factor.impact === 'negative' ? 'bg-red-500/20 text-red-400' :
-                            factor.impact === 'discount' ? 'bg-blue-500/20 text-blue-400' :
-                              factor.impact === 'premium' ? 'bg-purple-500/20 text-purple-400' :
-                                'bg-white/10 text-gray-400'
+                        factor.impact === 'negative' ? 'bg-red-500/20 text-red-400' :
+                          factor.impact === 'discount' ? 'bg-blue-500/20 text-blue-400' :
+                            factor.impact === 'premium' ? 'bg-purple-500/20 text-purple-400' :
+                              'bg-white/10 text-gray-400'
                         }`}
                     >
                       {factor.name}: {factor.impact === 'primary' ? `₹${factor.value}` :
@@ -524,13 +524,13 @@ const Seller: React.FC = () => {
                     <div className="flex justify-between text-xs mb-1">
                       <span className="text-gray-400">Demand Score</span>
                       <span className={`font-bold ${demandPrediction.demandScore >= 70 ? 'text-green-400' :
-                          demandPrediction.demandScore >= 40 ? 'text-yellow-400' : 'text-red-400'
+                        demandPrediction.demandScore >= 40 ? 'text-yellow-400' : 'text-red-400'
                         }`}>{demandPrediction.demandScore}/100</span>
                     </div>
                     <div className="h-2 bg-black/30 rounded-full overflow-hidden">
                       <div
                         className={`h-full rounded-full transition-all ${demandPrediction.demandScore >= 70 ? 'bg-green-500' :
-                            demandPrediction.demandScore >= 40 ? 'bg-yellow-500' : 'bg-red-500'
+                          demandPrediction.demandScore >= 40 ? 'bg-yellow-500' : 'bg-red-500'
                           }`}
                         style={{ width: `${demandPrediction.demandScore}%` }}
                       />
@@ -540,7 +540,7 @@ const Seller: React.FC = () => {
                   <div className="flex flex-col items-center px-4 border-l border-white/10">
                     <span className="text-[10px] text-gray-500 uppercase">Trend</span>
                     <span className={`flex items-center gap-1 font-bold text-sm ${demandPrediction.trend === 'rising' ? 'text-green-400' :
-                        demandPrediction.trend === 'declining' ? 'text-red-400' : 'text-gray-400'
+                      demandPrediction.trend === 'declining' ? 'text-red-400' : 'text-gray-400'
                       }`}>
                       <span className="material-symbols-outlined text-sm">
                         {demandPrediction.trend === 'rising' ? 'trending_up' :
@@ -559,7 +559,7 @@ const Seller: React.FC = () => {
                   <div>
                     <p className="text-[10px] text-gray-500 uppercase mb-1">Competition</p>
                     <p className={`text-sm font-bold ${demandPrediction.competitionLevel === 'low' ? 'text-green-400' :
-                        demandPrediction.competitionLevel === 'high' ? 'text-red-400' : 'text-yellow-400'
+                      demandPrediction.competitionLevel === 'high' ? 'text-red-400' : 'text-yellow-400'
                       }`}>{demandPrediction.competitionLevel.charAt(0).toUpperCase() + demandPrediction.competitionLevel.slice(1)}</p>
                   </div>
                 </div>
