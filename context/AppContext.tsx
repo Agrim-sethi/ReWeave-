@@ -26,6 +26,8 @@ interface AppContextType {
   notifications: Notification[];
   showNotification: (message: string, type?: 'success' | 'error' | 'info') => void;
   removeNotification: (id: string) => void;
+  showProfileSetup: boolean;
+  setShowProfileSetup: (show: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -37,6 +39,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [usersDB, setUsersDB] = useState<User[]>([]);
   const [interestedListingIds, setInterestedListingIds] = useState<string[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [showProfileSetup, setShowProfileSetup] = useState(false);
 
   // Listen for auth state changes
   useEffect(() => {
@@ -170,7 +173,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       addInterest,
       notifications,
       showNotification,
-      removeNotification
+      removeNotification,
+      showProfileSetup,
+      setShowProfileSetup
     }}>
       {children}
     </AppContext.Provider>
