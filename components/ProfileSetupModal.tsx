@@ -118,7 +118,7 @@ const ProfileSetupModal: React.FC = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold ml-1">Phone Number (Optional)</label>
+                            <label className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold ml-1">Phone Number</label>
                             <input
                                 type="tel"
                                 value={phoneNumber}
