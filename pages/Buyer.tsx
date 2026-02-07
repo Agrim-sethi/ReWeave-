@@ -4,6 +4,35 @@ import { useNavigate } from 'react-router-dom';
 import { User, Listing } from '../types';
 import { mlService, ListingRecommendation } from '../services/mlService';
 
+const FabricOverlay: React.FC<{ material: string }> = ({ material }) => {
+  const getFabricInfo = (mat: string) => {
+    const m = mat.toLowerCase();
+    if (m.includes('cotton')) return { icon: 'eco', color: 'bg-accent-green', text: 'text-accent-green' };
+    if (m.includes('silk')) return { icon: 'auto_awesome', color: 'bg-accent-pink', text: 'text-accent-pink' };
+    if (m.includes('linen')) return { icon: 'grass', color: 'bg-accent-blue', text: 'text-accent-blue' };
+    if (m.includes('wool')) return { icon: 'waves', color: 'bg-orange-400', text: 'text-orange-400' };
+    if (m.includes('denim')) return { icon: 'layers', color: 'bg-blue-500', text: 'text-blue-500' };
+    if (m.includes('leather')) return { icon: 'landscape', color: 'bg-amber-700', text: 'text-amber-700' };
+    return { icon: 'texture', color: 'bg-white/20', text: 'text-gray-400' };
+  };
+
+  const info = getFabricInfo(material);
+
+  return (
+    <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center pointer-events-none">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+      <div className="relative z-20 flex flex-col items-center scale-90 group-hover:scale-100 transition-transform duration-500">
+        <div className={`w-16 h-16 rounded-2xl ${info.color} flex items-center justify-center mb-3 shadow-2xl rotate-12 group-hover:rotate-0 transition-transform duration-700`}>
+          <span className="material-symbols-outlined text-3xl text-deep-charcoal font-bold">{info.icon}</span>
+        </div>
+        <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-xl">
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white whitespace-nowrap">{material} Base</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Buyer: React.FC = () => {
   const { listings, currentUser, showNotification, getUser, addInterest, interestedListingIds } = useAppContext();
   const navigate = useNavigate();
@@ -194,7 +223,7 @@ const Buyer: React.FC = () => {
                     className="w-full cursor-pointer"
                     max="150"
                     min="0"
-                    step="1"
+                    step="100"
                     type="range"
                     value={priceRange}
                     onChange={(e) => setPriceRange(parseInt(e.target.value))}
@@ -262,12 +291,12 @@ const Buyer: React.FC = () => {
                   <div className="aspect-[3/2] relative overflow-hidden">
                     <img
                       alt={rec.listing.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       src={rec.listing.imageUrl}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                    <div className="absolute bottom-4 left-4">
-                      <span className="px-2 py-1 bg-accent-green/90 text-deep-charcoal text-[10px] font-black uppercase tracking-wider rounded-lg">
+                    <FabricOverlay material={rec.listing.material} />
+                    <div className="absolute top-4 left-4 z-10">
+                      <span className="px-2 py-1 bg-black/60 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-wider rounded-lg border border-white/10">
                         {rec.listing.material}
                       </span>
                     </div>
@@ -312,9 +341,10 @@ const Buyer: React.FC = () => {
           {filteredListings.map(listing => (
             <div key={listing.id} className="group bg-white/5 border border-white/10 rounded-[2rem] overflow-hidden hover:border-white/20 transition-all duration-300 flex flex-col h-full">
               <div className="aspect-[4/3] relative overflow-hidden bg-gray-900">
-                <img alt={listing.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={listing.imageUrl} />
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-accent-green text-deep-charcoal text-[10px] font-black uppercase tracking-widest rounded-full">{listing.status}</span>
+                <img alt={listing.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src={listing.imageUrl} />
+                <FabricOverlay material={listing.material} />
+                <div className="absolute top-4 left-4 z-20">
+                  <span className="px-3 py-1 bg-accent-green text-deep-charcoal text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg">{listing.status}</span>
                 </div>
               </div>
               <div className="p-8 flex flex-col flex-grow">
