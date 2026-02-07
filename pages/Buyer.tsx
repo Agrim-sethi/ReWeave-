@@ -4,31 +4,22 @@ import { useNavigate } from 'react-router-dom';
 import { User, Listing } from '../types';
 import { mlService, ListingRecommendation } from '../services/mlService';
 
-const FabricOverlay: React.FC<{ material: string }> = ({ material }) => {
-  const getFabricInfo = (mat: string) => {
+const MaterialTagCard: React.FC<{ material: string }> = ({ material }) => {
+  const getFabricStyles = (mat: string) => {
     const m = mat.toLowerCase();
-    if (m.includes('cotton')) return { icon: 'eco', color: 'bg-accent-green', text: 'text-accent-green' };
-    if (m.includes('silk')) return { icon: 'auto_awesome', color: 'bg-accent-pink', text: 'text-accent-pink' };
-    if (m.includes('linen')) return { icon: 'grass', color: 'bg-accent-blue', text: 'text-accent-blue' };
-    if (m.includes('wool')) return { icon: 'waves', color: 'bg-orange-400', text: 'text-orange-400' };
-    if (m.includes('denim')) return { icon: 'layers', color: 'bg-blue-500', text: 'text-blue-500' };
-    if (m.includes('leather')) return { icon: 'landscape', color: 'bg-amber-700', text: 'text-amber-700' };
-    return { icon: 'texture', color: 'bg-white/20', text: 'text-gray-400' };
+    if (m.includes('cotton')) return 'bg-accent-green text-deep-charcoal border-accent-green/30';
+    if (m.includes('silk')) return 'bg-accent-pink text-white border-accent-pink/30';
+    if (m.includes('linen')) return 'bg-accent-blue text-white border-accent-blue/30';
+    if (m.includes('wool')) return 'bg-orange-500 text-white border-orange-500/30';
+    if (m.includes('denim')) return 'bg-blue-600 text-white border-blue-600/30';
+    return 'bg-white/10 text-gray-300 border-white/20';
   };
 
-  const info = getFabricInfo(material);
+  const styles = getFabricStyles(material);
 
   return (
-    <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center pointer-events-none">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
-      <div className="relative z-20 flex flex-col items-center scale-90 group-hover:scale-100 transition-transform duration-500">
-        <div className={`w-16 h-16 rounded-2xl ${info.color} flex items-center justify-center mb-3 shadow-2xl rotate-12 group-hover:rotate-0 transition-transform duration-700`}>
-          <span className="material-symbols-outlined text-3xl text-deep-charcoal font-bold">{info.icon}</span>
-        </div>
-        <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-xl">
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white whitespace-nowrap">{material} Base</span>
-        </div>
-      </div>
+    <div className={`absolute -top-3 left-8 px-4 py-2 rounded-t-xl border-t border-x font-black text-[10px] uppercase tracking-[0.2em] transform transition-transform duration-500 group-hover:-translate-y-2 z-0 ${styles}`}>
+      {material}
     </div>
   );
 };
@@ -280,53 +271,51 @@ const Buyer: React.FC = () => {
               {recommendations.slice(0, 3).map((rec) => (
                 <div
                   key={rec.listing.id}
-                  className="relative bg-black/30 border border-white/10 rounded-2xl overflow-hidden hover:border-accent-pink/50 transition-all group"
+                  className="relative pt-3 group"
                 >
-                  {/* Match Score Badge */}
-                  <div className="absolute top-4 right-4 z-10 flex items-center gap-1 bg-black/60 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full">
-                    <span className="material-symbols-outlined text-accent-pink text-[10px] sm:text-sm">star</span>
-                    <span className="text-[10px] sm:text-xs font-bold text-white uppercase tracking-wider">{rec.matchScore}% Match</span>
-                  </div>
-
-                  <div className="aspect-[3/2] relative overflow-hidden">
-                    <img
-                      alt={rec.listing.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      src={rec.listing.imageUrl}
-                    />
-                    <FabricOverlay material={rec.listing.material} />
-                    <div className="absolute top-4 left-4 z-10">
-                      <span className="px-2 py-1 bg-black/60 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-wider rounded-lg border border-white/10">
-                        {rec.listing.material}
-                      </span>
+                  <MaterialTagCard material={rec.listing.material} />
+                  <div className="relative z-10 bg-black/30 border border-white/10 rounded-2xl overflow-hidden group-hover:border-accent-pink/50 transition-all">
+                    {/* Match Score Badge */}
+                    <div className="absolute top-4 right-4 z-10 flex items-center gap-1 bg-black/60 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full">
+                      <span className="material-symbols-outlined text-accent-pink text-[10px] sm:text-sm">star</span>
+                      <span className="text-[10px] sm:text-xs font-bold text-white uppercase tracking-wider">{rec.matchScore}% Match</span>
                     </div>
-                  </div>
 
-                  <div className="p-5">
-                    <h3 className="font-bold text-lg mb-1 line-clamp-1">{rec.listing.title}</h3>
-                    <p className="text-sm text-gray-400 mb-4 line-clamp-2">{rec.reason}</p>
+                    <div className="aspect-[3/2] relative overflow-hidden">
+                      <img
+                        alt={rec.listing.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        src={rec.listing.imageUrl}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-60" />
+                    </div>
 
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-[10px] text-gray-500 uppercase">Price</p>
-                        <p className="text-lg font-bold text-accent-green">₹{rec.listing.pricePerUnit}<span className="text-xs text-gray-400">/{rec.listing.unit || 'm'}</span></p>
+                    <div className="p-5">
+                      <h3 className="font-bold text-lg mb-1 line-clamp-1">{rec.listing.title}</h3>
+                      <p className="text-sm text-gray-400 mb-4 line-clamp-2">{rec.reason}</p>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-[10px] text-gray-500 uppercase">Price</p>
+                          <p className="text-lg font-bold text-accent-green">₹{rec.listing.pricePerUnit}<span className="text-xs text-gray-400">/{rec.listing.unit || 'm'}</span></p>
+                        </div>
+                        {interestedListingIds.includes(rec.listing.id) ? (
+                          <button
+                            onClick={() => handleViewContact(rec.listing.sellerName)}
+                            className="px-4 py-2 bg-accent-blue text-deep-charcoal rounded-xl text-xs font-bold hover:bg-white transition-colors flex items-center gap-1"
+                          >
+                            <span className="material-symbols-outlined text-sm">contact_phone</span>
+                            Contact
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleExpressInterest(rec.listing.id)}
+                            className="px-4 py-2 bg-accent-pink text-deep-charcoal rounded-xl text-xs font-bold hover:bg-white transition-colors"
+                          >
+                            Express Interest
+                          </button>
+                        )}
                       </div>
-                      {interestedListingIds.includes(rec.listing.id) ? (
-                        <button
-                          onClick={() => handleViewContact(rec.listing.sellerName)}
-                          className="px-4 py-2 bg-accent-blue text-deep-charcoal rounded-xl text-xs font-bold hover:bg-white transition-colors flex items-center gap-1"
-                        >
-                          <span className="material-symbols-outlined text-sm">contact_phone</span>
-                          Contact
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => handleExpressInterest(rec.listing.id)}
-                          className="px-4 py-2 bg-accent-pink text-deep-charcoal rounded-xl text-xs font-bold hover:bg-white transition-colors"
-                        >
-                          Express Interest
-                        </button>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -339,53 +328,55 @@ const Buyer: React.FC = () => {
       <section className="max-w-7xl mx-auto px-6 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredListings.map(listing => (
-            <div key={listing.id} className="group bg-white/5 border border-white/10 rounded-[2rem] overflow-hidden hover:border-white/20 transition-all duration-300 flex flex-col h-full">
-              <div className="aspect-[4/3] relative overflow-hidden bg-gray-900">
-                <img alt={listing.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src={listing.imageUrl} />
-                <FabricOverlay material={listing.material} />
-                <div className="absolute top-4 left-4 z-20">
-                  <span className="px-3 py-1 bg-accent-green text-deep-charcoal text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg">{listing.status}</span>
-                </div>
-              </div>
-              <div className="p-8 flex flex-col flex-grow">
-                <div className="mb-6 flex-grow">
-                  <h3 className="text-2xl font-black mb-2 leading-tight">{listing.title}</h3>
-                  <p className="text-gray-400 text-sm">{listing.description}</p>
-                </div>
-                <div className="grid grid-cols-2 gap-4 mb-8">
-                  <div>
-                    <p className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Available</p>
-                    <p className="text-lg font-bold">{listing.qty} {listing.unit || 'm'}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Price per unit</p>
-                    <p className="text-lg font-bold text-accent-green">₹{listing.pricePerUnit}</p>
+            <div key={listing.id} className="relative pt-3 group">
+              <MaterialTagCard material={listing.material} />
+              <div className="relative z-10 bg-white/5 border border-white/10 rounded-[2rem] overflow-hidden hover:border-white/20 transition-all duration-300 flex flex-col h-full">
+                <div className="aspect-[4/3] relative overflow-hidden bg-gray-900">
+                  <img alt={listing.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src={listing.imageUrl} />
+                  <div className="absolute top-4 left-4 z-20">
+                    <span className="px-3 py-1 bg-accent-green text-deep-charcoal text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg">{listing.status}</span>
                   </div>
                 </div>
-                <div className="flex items-center justify-between pt-6 border-t border-white/10">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
-                      <span className="material-symbols-outlined text-sm text-gray-400">person</span>
+                <div className="p-8 flex flex-col flex-grow">
+                  <div className="mb-6 flex-grow">
+                    <h3 className="text-2xl font-black mb-2 leading-tight">{listing.title}</h3>
+                    <p className="text-gray-400 text-sm">{listing.description}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 mb-8">
+                    <div>
+                      <p className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Available</p>
+                      <p className="text-lg font-bold">{listing.qty} {listing.unit || 'm'}</p>
                     </div>
-                    <span className="text-xs font-bold text-gray-300">{listing.sellerName}</span>
+                    <div className="text-right">
+                      <p className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Price per unit</p>
+                      <p className="text-lg font-bold text-accent-green">₹{listing.pricePerUnit}</p>
+                    </div>
                   </div>
+                  <div className="flex items-center justify-between pt-6 border-t border-white/10">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
+                        <span className="material-symbols-outlined text-sm text-gray-400">person</span>
+                      </div>
+                      <span className="text-xs font-bold text-gray-300">{listing.sellerName}</span>
+                    </div>
 
-                  {interestedListingIds.includes(listing.id) ? (
-                    <button
-                      onClick={() => handleViewContact(listing.sellerName)}
-                      className="bg-accent-blue text-deep-charcoal px-6 py-3 rounded-xl font-black text-xs hover:bg-white transition-all transform active:scale-95 flex items-center gap-2"
-                    >
-                      <span className="material-symbols-outlined text-lg">contact_phone</span>
-                      View Contact Info
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleExpressInterest(listing.id)}
-                      className="bg-white text-deep-charcoal px-6 py-3 rounded-xl font-black text-sm hover:bg-accent-green transition-all transform active:scale-95"
-                    >
-                      Express Interest
-                    </button>
-                  )}
+                    {interestedListingIds.includes(listing.id) ? (
+                      <button
+                        onClick={() => handleViewContact(listing.sellerName)}
+                        className="bg-accent-blue text-deep-charcoal px-6 py-3 rounded-xl font-black text-xs hover:bg-white transition-all transform active:scale-95 flex items-center gap-2"
+                      >
+                        <span className="material-symbols-outlined text-lg">contact_phone</span>
+                        View Contact Info
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleExpressInterest(listing.id)}
+                        className="bg-white text-deep-charcoal px-6 py-3 rounded-xl font-black text-sm hover:bg-accent-green transition-all transform active:scale-95"
+                      >
+                        Express Interest
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
