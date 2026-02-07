@@ -27,6 +27,16 @@ const ProfileSetupModal: React.FC = () => {
             return;
         }
 
+        const cleanedPhone = phoneNumber.replace(/\D/g, '');
+        if (!cleanedPhone) {
+            showNotification("Phone number is required.", "error");
+            return;
+        }
+        if (cleanedPhone.length !== 10) {
+            showNotification("Phone number must be exactly 10 digits.", "error");
+            return;
+        }
+
         setIsSaving(true);
         try {
             const oldCompanyName = currentUser.companyName;
