@@ -212,7 +212,7 @@ const Buyer: React.FC = () => {
                 <div className="pt-4">
                   <input
                     className="w-full cursor-pointer"
-                    max="300"
+                    max="750"
                     min="0"
                     step="5"
                     type="range"
