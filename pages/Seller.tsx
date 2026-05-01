@@ -144,18 +144,54 @@ const Seller: React.FC = () => {
     showNotification(`Listing marked as ${newStatus}`);
   };
 
+  const compressImage = (base64Str: string): Promise<string> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = base64Str;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 1200;
+        const MAX_HEIGHT = 1200;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+        // Use 0.7 quality to keep file size small for Firestore
+        resolve(canvas.toDataURL('image/jpeg', 0.7));
+      };
+    });
+  };
+
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     // Create preview
     const reader = new FileReader();
-    reader.onloadend = () => {
+    reader.onloadend = async () => {
       const base64String = reader.result as string;
-      setImagePreview(base64String);
+      
+      // Compress image before setting it (crucial for mobile/Firestore limits)
+      const compressedBase64 = await compressImage(base64String);
+      setImagePreview(compressedBase64);
 
       // Auto-analyze with Gemini
-      analyzeImage(base64String);
+      analyzeImage(compressedBase64);
     };
     reader.readAsDataURL(file);
   };
@@ -167,32 +203,38 @@ const Seller: React.FC = () => {
     // Extract base64 data only (remove data:image/jpeg;base64, prefix)
     const base64Data = base64Image.split(',')[1];
 
-    const analysis = await analyzeFabricImage(base64Data);
+    try {
+      const analysis = await analyzeFabricImage(base64Data);
 
-    if (analysis) {
-      // Try to match AI material to our dropdown options
-      let matchedMaterial = "Other";
-      const aiMat = analysis.material.toLowerCase();
-      for (const opt of MATERIAL_OPTIONS) {
-        if (aiMat.includes(opt.toLowerCase())) {
-          matchedMaterial = opt;
-          break;
+      if (analysis) {
+        // Try to match AI material to our dropdown options
+        let matchedMaterial = "Other";
+        const aiMat = analysis.material.toLowerCase();
+        for (const opt of MATERIAL_OPTIONS) {
+          if (aiMat.includes(opt.toLowerCase())) {
+            matchedMaterial = opt;
+            break;
+          }
         }
-      }
 
-      setFormData(prev => ({
-        ...prev,
-        title: analysis.title,
-        description: analysis.description,
-        uses: analysis.uses,
-        material: matchedMaterial,
-        price: analysis.estimatedPrice.toString()
-      }));
-      showNotification("Fabric details auto-filled by AI!", "success");
-    } else {
-      showNotification("Could not analyze image. Please fill details manually.", "error");
+        setFormData(prev => ({
+          ...prev,
+          title: analysis.title,
+          description: analysis.description,
+          uses: analysis.uses,
+          material: matchedMaterial,
+          price: analysis.estimatedPrice.toString()
+        }));
+        showNotification("Fabric details auto-filled by AI!", "success");
+      } else {
+        showNotification("Could not analyze image. Please fill details manually.", "error");
+      }
+    } catch (error) {
+      console.error("Analysis error:", error);
+      showNotification("AI analysis failed. Please fill details manually.", "error");
+    } finally {
+      setAnalyzing(false);
     }
-    setAnalyzing(false);
   };
 
   const handleLocationSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -221,44 +263,56 @@ const Seller: React.FC = () => {
 
     setLoading(true);
 
-    if (!imagePreview) {
-      showNotification("Please upload an image of the fabric.", "error");
+    try {
+      if (!imagePreview) {
+        showNotification("Please upload an image of the fabric.", "error");
+        setLoading(false);
+        return;
+      }
+
+      if (!formData.location) {
+        showNotification("Please provide a location.", "error");
+        setLoading(false);
+        return;
+      }
+
+      const newListing: Listing = {
+        id: editingId || Date.now().toString(),
+        title: formData.title,
+        description: formData.description,
+        uses: formData.uses,
+        qty: parseFloat(formData.qty),
+        unit: formData.unit,
+        pricePerUnit: parseFloat(formData.price),
+        location: formData.location,
+        imageUrl: imagePreview,
+        material: formData.material || "Other",
+        sellerName: currentUser.companyName,
+        status: 'Available',
+        dateListed: new Date().toISOString().split('T')[0]
+      };
+
+      if (editingId) {
+        await updateListing(newListing);
+        showNotification("Listing updated successfully!");
+      } else {
+        await addListing(newListing);
+        showNotification("Fabric listed successfully!");
+      }
+
+      resetForm();
+    } catch (error: any) {
+      console.error("Submit error:", error);
+      let errorMsg = "Failed to save listing. Please try again.";
+      if (error.code === 'permission-denied') {
+        errorMsg = "You don't have permission to save this listing.";
+      } else if (error.message?.includes('too large') || error.code === 'invalid-argument') {
+        errorMsg = "The image is too large even after compression. Try a smaller photo.";
+      }
+      showNotification(errorMsg, "error");
+    } finally {
       setLoading(false);
-      return;
     }
-
-    if (!formData.location) {
-      showNotification("Please provide a location.", "error");
-      setLoading(false);
-      return;
-    }
-
-    const newListing: Listing = {
-      id: editingId || Date.now().toString(),
-      title: formData.title,
-      description: formData.description,
-      uses: formData.uses,
-      qty: parseFloat(formData.qty),
-      unit: formData.unit,
-      pricePerUnit: parseFloat(formData.price),
-      location: formData.location,
-      imageUrl: imagePreview,
-      material: formData.material || "Other",
-      sellerName: currentUser.companyName,
-      status: 'Available',
-      dateListed: new Date().toISOString().split('T')[0]
-    };
-
-    if (editingId) {
-      await updateListing(newListing);
-      showNotification("Listing updated successfully!");
-    } else {
-      await addListing(newListing);
-      showNotification("Fabric listed successfully!");
-    }
-
-    setLoading(false);
-    resetForm();
   };
 
   return (
