@@ -27,9 +27,15 @@ const MaterialTagCard: React.FC<{ material: string }> = ({ material }) => {
 const Buyer: React.FC = () => {
   const { listings, currentUser, showNotification, getUser, addInterest, interestedListingIds } = useAppContext();
   const navigate = useNavigate();
-  const [filterType, setFilterType] = useState<string>('All');
-  const [priceRange, setPriceRange] = useState<number>(150);
-  const [searchTerm, setSearchTerm] = useState('');
+  // Applied Filter State (what actually filters the list)
+  const [appliedFilterType, setAppliedFilterType] = useState<string>('All');
+  const [appliedPriceRange, setAppliedPriceRange] = useState<number>(750);
+  const [appliedSearchTerm, setAppliedSearchTerm] = useState('');
+
+  // Draft Filter State (internal to the filter UI until confirmed)
+  const [draftFilterType, setDraftFilterType] = useState<string>('All');
+  const [draftPriceRange, setDraftPriceRange] = useState<number>(750);
+  const [draftSearchTerm, setDraftSearchTerm] = useState('');
 
   // Local state for UI feedback only (popup modal)
   const [showConfPopup, setShowConfPopup] = useState(false);
@@ -54,13 +60,30 @@ const Buyer: React.FC = () => {
   }, [listings]);
 
   const filteredListings = listings.filter(l => {
-    const matchesType = filterType === 'All' || l.material === filterType;
-    const matchesPrice = l.pricePerUnit <= priceRange;
-    const matchesSearch = l.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      l.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      l.material.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = appliedFilterType === 'All' || l.material === appliedFilterType;
+    const matchesPrice = l.pricePerUnit <= appliedPriceRange;
+    const matchesSearch = l.location.toLowerCase().includes(appliedSearchTerm.toLowerCase()) ||
+      l.title.toLowerCase().includes(appliedSearchTerm.toLowerCase()) ||
+      l.material.toLowerCase().includes(appliedSearchTerm.toLowerCase());
     return matchesType && matchesPrice && matchesSearch;
   });
+
+  const handleApplyFilters = () => {
+    setAppliedFilterType(draftFilterType);
+    setAppliedPriceRange(draftPriceRange);
+    setAppliedSearchTerm(draftSearchTerm);
+    showNotification("Marketplace filters updated!", "success");
+  };
+
+  const handleClearFilters = () => {
+    setDraftFilterType('All');
+    setDraftPriceRange(750);
+    setDraftSearchTerm('');
+    setAppliedFilterType('All');
+    setAppliedPriceRange(750);
+    setAppliedSearchTerm('');
+    showNotification("All filters cleared", "info");
+  };
 
   const handleExpressInterest = (listingId: string) => {
     if (!currentUser) {
@@ -192,8 +215,8 @@ const Buyer: React.FC = () => {
                   {availableMaterials.length > 1 ? availableMaterials.map(type => (
                     <button
                       key={type}
-                      onClick={() => setFilterType(type)}
-                      className={`px-5 py-2 rounded-full font-medium text-sm transition-all ${filterType === type ? 'bg-white text-deep-charcoal font-bold' : 'bg-white/5 border border-white/10 hover:border-white/30'}`}
+                      onClick={() => setDraftFilterType(type)}
+                      className={`px-5 py-2 rounded-full font-medium text-sm transition-all ${draftFilterType === type ? 'bg-white text-deep-charcoal font-bold' : 'bg-white/5 border border-white/10 hover:border-white/30'}`}
                     >
                       {type}
                     </button>
@@ -207,21 +230,21 @@ const Buyer: React.FC = () => {
               <div className="lg:col-span-4 space-y-4">
                 <div className="flex justify-between items-center">
                   <label className="text-sm font-bold uppercase tracking-wider text-gray-400">MAX PRICE (₹)</label>
-                  <span className="text-accent-green font-mono font-bold">₹0 - ₹{priceRange} /unit</span>
+                  <span className="text-accent-green font-mono font-bold">₹0 - ₹{draftPriceRange} /unit</span>
                 </div>
                 <div className="pt-4">
                   <input
-                    className="w-full cursor-pointer"
+                    className="w-full cursor-pointer accent-accent-green"
                     max="750"
                     min="0"
-                    step="5"
+                    step="50"
                     type="range"
-                    value={priceRange}
-                    onChange={(e) => setPriceRange(parseInt(e.target.value))}
+                    value={draftPriceRange}
+                    onChange={(e) => setDraftPriceRange(parseInt(e.target.value))}
                   />
                   <div className="flex justify-between mt-2 text-[10px] text-gray-500 font-mono">
                     <span>₹0</span>
-                    <span>₹150+</span>
+                    <span>₹750+</span>
                   </div>
                 </div>
               </div>
@@ -235,10 +258,30 @@ const Buyer: React.FC = () => {
                     className="w-full bg-input-bg border border-white/10 rounded-2xl pl-12 pr-6 py-3 focus:ring-2 focus:ring-accent-green focus:border-transparent transition-all outline-none text-white placeholder:text-gray-700"
                     placeholder="City, Title, or Material..."
                     type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    value={draftSearchTerm}
+                    onChange={(e) => setDraftSearchTerm(e.target.value)}
                   />
                 </div>
+              </div>
+            </div>
+
+            <div className="mt-10 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center gap-4">
+              <button
+                onClick={handleApplyFilters}
+                className="w-full sm:w-auto px-10 py-4 bg-white text-deep-charcoal font-black rounded-xl hover:bg-accent-green transition-all shadow-lg flex items-center justify-center gap-2"
+              >
+                <span className="material-symbols-outlined">done_all</span>
+                Confirm Filters
+              </button>
+              <button
+                onClick={handleClearFilters}
+                className="w-full sm:w-auto px-10 py-4 bg-white/5 border border-white/10 text-white font-bold rounded-xl hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+              >
+                <span className="material-symbols-outlined">filter_alt_off</span>
+                Remove Filters
+              </button>
+              <div className="sm:ml-auto text-xs text-gray-500 font-bold uppercase tracking-widest bg-black/20 px-4 py-2 rounded-full border border-white/5">
+                Current: {appliedFilterType} • ₹{appliedPriceRange} • "{appliedSearchTerm || 'None'}"
               </div>
             </div>
           </div>
