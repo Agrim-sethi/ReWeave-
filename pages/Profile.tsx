@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Listing } from '../types';
 import { storageService } from '../services/storageService';
 import { auth } from '../config/firebase';
+import AccountTypeSelect from '../components/AccountTypeSelect';
+import { DEFAULT_ACCOUNT_TYPE, normalizeAccountType } from '../constants/accountTypes';
 
 const Profile: React.FC = () => {
   const { listings, deleteListing, logout, currentUser, setCurrentUser, showNotification, interestedListingIds, updateListing } = useAppContext();
@@ -13,7 +15,7 @@ const Profile: React.FC = () => {
   const [isEditingType, setIsEditingType] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(currentUser?.phoneNumber || '');
   const [companyName, setCompanyName] = useState(currentUser?.companyName || '');
-  const [accountType, setAccountType] = useState(currentUser?.type || 'Buyer');
+  const [accountType, setAccountType] = useState(normalizeAccountType(currentUser?.type || DEFAULT_ACCOUNT_TYPE));
   const [isSaving, setIsSaving] = useState(false);
 
   // If no user is logged in, redirect to login
@@ -174,7 +176,7 @@ const Profile: React.FC = () => {
   };
 
   const handleCancelTypeEdit = () => {
-    setAccountType(currentUser?.type || 'Buyer');
+    setAccountType(normalizeAccountType(currentUser?.type || DEFAULT_ACCOUNT_TYPE));
     setIsEditingType(false);
   };
 
@@ -258,15 +260,12 @@ const Profile: React.FC = () => {
             </div>
             {isEditingType ? (
               <div className="flex items-center gap-3">
-                <select
+                <AccountTypeSelect
                   value={accountType}
-                  onChange={(e) => setAccountType(e.target.value)}
+                  onChange={setAccountType}
                   className="bg-black/30 border border-white/20 rounded-xl px-4 py-2 text-white text-lg font-bold focus:outline-none focus:border-accent-green transition-colors flex-1"
                   disabled={isSaving}
-                >
-                  <option value="Buyer" className="bg-deep-charcoal">Buyer</option>
-                  <option value="Seller" className="bg-deep-charcoal">Seller</option>
-                </select>
+                />
                 <button
                   onClick={handleUpdateType}
                   disabled={isSaving}
