@@ -13,6 +13,7 @@ import {
 } from 'firebase/firestore';
 import { db, auth } from '../config/firebase';
 import { Listing, User } from '../types';
+import { normalizeAccountType } from '../constants/accountTypes';
 
 export const storageService = {
   // Listings
@@ -76,7 +77,8 @@ export const storageService = {
 
       const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
       if (userDoc.exists()) {
-        return userDoc.data() as User;
+        const user = userDoc.data() as User;
+        return { ...user, type: normalizeAccountType(user.type) };
       }
       return null;
     } catch (error) {
@@ -93,7 +95,8 @@ export const storageService = {
       
       const users: User[] = [];
       querySnapshot.forEach((doc) => {
-        users.push(doc.data() as User);
+        const user = doc.data() as User;
+        users.push({ ...user, type: normalizeAccountType(user.type) });
       });
       
       return users;
@@ -110,7 +113,8 @@ export const storageService = {
       const querySnapshot = await getDocs(q);
       
       if (!querySnapshot.empty) {
-        return querySnapshot.docs[0].data() as User;
+        const user = querySnapshot.docs[0].data() as User;
+        return { ...user, type: normalizeAccountType(user.type) };
       }
       return null;
     } catch (error) {
