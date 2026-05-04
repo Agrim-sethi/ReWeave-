@@ -11,6 +11,7 @@ import {
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 import { User } from '../types';
+import { DEFAULT_ACCOUNT_TYPE, normalizeAccountType } from '../constants/accountTypes';
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -33,7 +34,7 @@ export const authService = {
         email,
         companyName: userData.companyName,
         phoneNumber: userData.phoneNumber,
-        type: userData.type,
+        type: normalizeAccountType(userData.type),
         avatarUrl: userData.avatarUrl
       };
 
@@ -101,7 +102,7 @@ export const authService = {
 
   // Sign in with Google
   signInWithGoogle: async (
-    defaultUserType: string = 'Buyer'
+    defaultUserType: string = DEFAULT_ACCOUNT_TYPE
   ): Promise<{ success: boolean; user?: User; error?: string }> => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -116,13 +117,17 @@ export const authService = {
       if (userDoc.exists()) {
         // Existing user
         user = userDoc.data() as User;
+        user = {
+          ...user,
+          type: normalizeAccountType(user.type)
+        };
       } else {
         // New user - create document
         user = {
           email: firebaseUser.email || '',
           companyName: firebaseUser.displayName || 'User',
           phoneNumber: firebaseUser.phoneNumber || '',
-          type: defaultUserType,
+          type: normalizeAccountType(defaultUserType || DEFAULT_ACCOUNT_TYPE),
           avatarUrl: firebaseUser.photoURL || undefined
         };
         await setDoc(userDocRef, user);
@@ -174,7 +179,11 @@ export const authService = {
     try {
       const userDoc = await getDoc(doc(db, 'users', uid));
       if (userDoc.exists()) {
-        return userDoc.data() as User;
+        const user = userDoc.data() as User;
+        return {
+          ...user,
+          type: normalizeAccountType(user.type)
+        };
       }
       return null;
     } catch (error) {
