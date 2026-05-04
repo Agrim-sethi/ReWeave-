@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend, YAxis, LineChart, Line, AreaChart, Area } from 'recharts';
 import { useAppContext } from '../context/AppContext';
 import { mlService, AggregatedMarketInsights, MaterialTrend } from '../services/mlService';
+import { normalizeAccountType } from '../constants/accountTypes';
 
 const Analytics: React.FC = () => {
   const { listings, users } = useAppContext();
@@ -41,25 +42,27 @@ const Analytics: React.FC = () => {
     })).sort((a, b) => Math.max(b.priceM, b.priceKg) - Math.max(a.priceM, a.priceKg));
   }, [listings]);
 
-  // 2. Calculate Inventory Distribution (by Quantity)
-  const dataPie = useMemo(() => {
+  // 2. Calculate profession distribution
+  const professionData = useMemo(() => {
     const stats: Record<string, number> = {};
-    let totalQty = 0;
+    const colors = ['#60a5fa', '#a78bfa', '#bef264', '#f9a8d4', '#cbd5e1', '#fb7185', '#22d3ee', '#f59e0b', '#34d399', '#f97316'];
 
-    listings.forEach(l => {
-      const mat = l.material || 'Unknown';
-      stats[mat] = (stats[mat] || 0) + l.qty;
-      totalQty += l.qty;
+    users.forEach((user) => {
+      const type = normalizeAccountType(user.type);
+      stats[type] = (stats[type] || 0) + 1;
     });
 
-    const colors = ['#60a5fa', '#a78bfa', '#bef264', '#f9a8d4', '#cbd5e1'];
+    const totalUsers = Object.values(stats).reduce((sum, count) => sum + count, 0);
 
-    return Object.keys(stats).map((mat, idx) => ({
-      name: mat,
-      value: totalQty > 0 ? Math.round((stats[mat] / totalQty) * 100) : 0,
-      color: colors[idx % colors.length]
-    }));
-  }, [listings]);
+    return Object.entries(stats)
+      .sort(([, a], [, b]) => b - a)
+      .map(([name, count], idx) => ({
+        name,
+        count,
+        value: totalUsers > 0 ? Math.round((count / totalUsers) * 100) : 0,
+        color: colors[idx % colors.length]
+      }));
+  }, [users]);
 
   // 3. Calculate Aggregates
   const aggregates = useMemo(() => {
@@ -67,12 +70,10 @@ const Analytics: React.FC = () => {
     const totalQty = listings.reduce((acc, l) => acc + l.qty, 0);
     const totalValue = listings.reduce((acc, l) => acc + (l.qty * l.pricePerUnit), 0);
 
-    // Calculate Active Sellers (now Sellers Onboarded)
-    const activeSellers = new Set(listings.map(l => l.sellerName));
-    const sellerCount = activeSellers.size;
-
-    // Calculate Buyers Onboarded
-    const buyerCount = users.filter(u => u.type === 'Buyer').length;
+    const activeOrganizations = new Set(listings.map(l => l.sellerName));
+    const organizationCount = activeOrganizations.size;
+    const totalUsers = users.length;
+    const topProfession = professionData[0]?.name || 'No profession data';
 
     // Calculate Average Price per Unit separately
     const mListings = listings.filter(l => l.unit === 'm' || !l.unit);
@@ -86,8 +87,8 @@ const Analytics: React.FC = () => {
       ? Math.round(kgListings.reduce((acc, l) => acc + l.pricePerUnit, 0) / kgListings.length)
       : 0;
 
-    return { totalListings, totalQty, totalValue, sellerCount, buyerCount, avgPriceM, avgPriceKg };
-  }, [listings, users]);
+    return { totalListings, totalQty, totalValue, organizationCount, totalUsers, topProfession, avgPriceM, avgPriceKg };
+  }, [listings, users, professionData]);
 
   // 4. Calculate Location/City Trends
   const locationTrends = useMemo(() => {
@@ -323,12 +324,12 @@ const Analytics: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Pie Chart */}
           <section className="lg:col-span-1 bg-charcoal/30 border border-white/5 rounded-[2.5rem] p-10 flex flex-col items-center">
-            <h2 className="text-3xl font-black tracking-tight mb-8 w-full">Inventory Dist.</h2>
+            <h2 className="text-3xl font-black tracking-tight mb-8 w-full">Profession Mix</h2>
             <div className="w-full h-64 relative">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={dataPie}
+                    data={professionData}
                     cx="50%"
                     cy="50%"
                     innerRadius={60}
@@ -336,7 +337,7 @@ const Analytics: React.FC = () => {
                     paddingAngle={5}
                     dataKey="value"
                   >
-                    {dataPie.map((entry, index) => (
+                    {professionData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
                     ))}
                   </Pie>
@@ -344,11 +345,11 @@ const Analytics: React.FC = () => {
               </ResponsiveContainer>
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <span className="text-4xl font-black">100%</span>
-                <span className="text-xs text-gray-400 font-bold uppercase tracking-widest">Stock</span>
+                <span className="text-xs text-gray-400 font-bold uppercase tracking-widest">Users</span>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4 w-full mt-4">
-              {dataPie.map((item) => (
+              {professionData.map((item) => (
                 <div key={item.name} className="flex items-center gap-3">
                   <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
                   <span className="text-sm font-medium text-gray-400">{item.value}% {item.name}</span>
@@ -399,22 +400,22 @@ const Analytics: React.FC = () => {
             </div>
           </div>
 
-          {/* Sellers & Buyers Onboarded */}
+          {/* Community Growth */}
           <div className="grid grid-cols-2 gap-4 bg-charcoal/30 border border-white/5 rounded-3xl p-6 hover:bg-charcoal/50 transition-colors">
             <div className="col-span-2">
               <span className="material-symbols-outlined text-accent-pink mb-4 text-3xl">group</span>
               <h3 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-1">Community Growth</h3>
             </div>
             <div>
-              <span className="text-[10px] text-gray-500 font-bold uppercase block mb-1">Sellers Onboarded</span>
-              <p className="text-xl font-black text-white">{aggregates.sellerCount}</p>
+              <span className="text-[10px] text-gray-500 font-bold uppercase block mb-1">Organizations Listing</span>
+              <p className="text-xl font-black text-white">{aggregates.organizationCount}</p>
             </div>
             <div>
-              <span className="text-[10px] text-gray-500 font-bold uppercase block mb-1">Buyers Onboarded</span>
-              <p className="text-xl font-black text-white">{aggregates.buyerCount}</p>
+              <span className="text-[10px] text-gray-500 font-bold uppercase block mb-1">Registered Users</span>
+              <p className="text-xl font-black text-white">{aggregates.totalUsers}</p>
             </div>
           </div>
-
+          <SummaryCard icon="badge" color="text-accent-blue" title="Top Profession" value={aggregates.topProfession} />
           <SummaryCard icon="monetization_on" color="text-accent-purple" title="Total Inventory Value" value={`₹${aggregates.totalValue.toLocaleString()}`} />
         </div>
       </div>
