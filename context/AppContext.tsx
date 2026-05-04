@@ -3,6 +3,7 @@ import { Listing, User } from '../types';
 import { storageService } from '../services/storageService';
 import { authService } from '../services/authService';
 import { auth } from '../config/firebase';
+import { normalizeAccountType } from '../constants/accountTypes';
 
 interface Notification {
   id: string;
@@ -41,6 +42,26 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [showProfileSetup, setShowProfileSetup] = useState(false);
 
+  const syncUserInState = (user: User | null) => {
+    if (!user) return;
+
+    const normalizedUser = {
+      ...user,
+      type: normalizeAccountType(user.type)
+    };
+
+    setUsersDB((prev) => {
+      const idx = prev.findIndex((existing) => existing.email === normalizedUser.email);
+      if (idx === -1) {
+        return [...prev, normalizedUser];
+      }
+
+      const next = [...prev];
+      next[idx] = normalizedUser;
+      return next;
+    });
+  };
+
   // Listen for auth state changes
   useEffect(() => {
     const unsubscribe = authService.onAuthStateChange(async (firebaseUser) => {
@@ -49,7 +70,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
           // User is signed in
           const userData = await authService.getUserData(firebaseUser.uid);
           if (userData) {
-            setCurrentUserState(userData);
+            const normalizedUser = { ...userData, type: normalizeAccountType(userData.type) };
+            setCurrentUserState(normalizedUser);
+            syncUserInState(normalizedUser);
             const interests = await storageService.getUserInterests(firebaseUser.uid);
             setInterestedListingIds(interests);
           }
@@ -77,7 +100,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         ]);
 
         setListings(fetchedListings);
-        setUsersDB(fetchedUsers);
+        setUsersDB(fetchedUsers.map((user) => ({ ...user, type: normalizeAccountType(user.type) })));
       } catch (error) {
         console.error("Failed to load data:", error);
         showNotification("Failed to load application data", "error");
@@ -90,9 +113,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   }, []);
 
   const setCurrentUser = async (user: User | null) => {
-    setCurrentUserState(user);
+    const normalizedUser = user ? { ...user, type: normalizeAccountType(user.type) } : null;
+    setCurrentUserState(normalizedUser);
+    syncUserInState(normalizedUser);
 
-    if (user && auth.currentUser) {
+    if (normalizedUser && auth.currentUser) {
       const interests = await storageService.getUserInterests(auth.currentUser.uid);
       setInterestedListingIds(interests);
     } else {
