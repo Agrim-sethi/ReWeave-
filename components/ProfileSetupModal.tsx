@@ -2,18 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { storageService } from '../services/storageService';
 import { auth } from '../config/firebase';
+import AccountTypeSelect from './AccountTypeSelect';
+import { DEFAULT_ACCOUNT_TYPE, normalizeAccountType } from '../constants/accountTypes';
 
 const ProfileSetupModal: React.FC = () => {
     const { currentUser, setCurrentUser, showProfileSetup, setShowProfileSetup, showNotification, listings } = useAppContext();
     const [companyName, setCompanyName] = useState('');
-    const [accountType, setAccountType] = useState('Buyer');
+    const [accountType, setAccountType] = useState(DEFAULT_ACCOUNT_TYPE);
     const [phoneNumber, setPhoneNumber] = useState('');
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         if (currentUser) {
             setCompanyName(currentUser.companyName || '');
-            setAccountType(currentUser.type || 'Buyer');
+            setAccountType(normalizeAccountType(currentUser.type));
             setPhoneNumber(currentUser.phoneNumber || '');
         }
     }, [currentUser]);
@@ -114,15 +116,12 @@ const ProfileSetupModal: React.FC = () => {
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold ml-1">Account Type</label>
                             <div className="relative">
-                                <select
+                                <AccountTypeSelect
                                     value={accountType}
-                                    onChange={(e) => setAccountType(e.target.value)}
+                                    onChange={setAccountType}
                                     className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-pink appearance-none cursor-pointer"
                                     disabled={isSaving}
-                                >
-                                    <option value="Buyer">Buyer</option>
-                                    <option value="Seller">Seller</option>
-                                </select>
+                                />
                                 <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">expand_more</span>
                             </div>
                         </div>
