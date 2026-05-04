@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { authService } from '../services/authService';
+import AccountTypeSelect from '../components/AccountTypeSelect';
+import { DEFAULT_ACCOUNT_TYPE } from '../constants/accountTypes';
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
   const { setCurrentUser, showNotification, setShowProfileSetup } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
-  const [userType, setUserType] = useState('Buyer');
+  const [userType, setUserType] = useState(DEFAULT_ACCOUNT_TYPE);
 
   const handleGoogleSignUp = async () => {
     setIsLoading(true);
@@ -52,18 +54,12 @@ const Signup: React.FC = () => {
             <div className="group relative border-b border-gray-600 focus-within:border-primary transition-colors duration-300">
               <label className="block text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-1 font-semibold" htmlFor="type">Account Type</label>
               <div className="relative">
-                <select
-                  className="w-full bg-transparent border-none px-0 py-2 text-white focus:ring-0 text-lg appearance-none cursor-pointer"
-                  id="type"
+                <AccountTypeSelect
                   value={userType}
+                  onChange={setUserType}
+                  className="w-full bg-transparent border-none px-0 py-2 text-white focus:ring-0 text-lg appearance-none cursor-pointer"
                   disabled={isLoading}
-                  onChange={(e) => setUserType(e.target.value)}
-                >
-                  <option className="bg-slate-900 text-white" value="Buyer">Buyer For EOL Fabric</option>
-                  <option className="bg-slate-900 text-white" value="Supplier">Fabric Supplier</option>
-                  <option className="bg-slate-900 text-white" value="Recycler">Textile Recycler</option>
-                  <option className="bg-slate-900 text-white" value="Designer">Independent Designer</option>
-                </select>
+                />
                 <span className="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">expand_more</span>
               </div>
             </div>
