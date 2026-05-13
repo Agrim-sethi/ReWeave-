@@ -446,7 +446,9 @@ const Buyer: React.FC = () => {
 
                     <div className="p-5">
                       <h3 className="font-bold text-lg mb-1 line-clamp-1">{rec.listing.title}</h3>
-                      <p className="text-sm text-gray-400 mb-4 line-clamp-2">{rec.reason}</p>
+                      <p className="text-sm text-gray-400 mb-4 line-clamp-2">
+                        {rec.reasons.join(' • ')}
+                      </p>
 
                       <div className="flex items-center justify-between">
                         <div>

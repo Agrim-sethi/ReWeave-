@@ -366,7 +366,10 @@ export const mlService = {
     allListings: Listing[],
     limit: number = 6
   ): ListingRecommendation[] => {
-    const availableListings = allListings.filter(l => l.status === 'Available');
+    const interestedListingIds = new Set(userInterests);
+    const availableListings = allListings.filter(
+      l => l.status === 'Available' && !interestedListingIds.has(l.id)
+    );
     
     if (availableListings.length === 0) return [];
 
@@ -621,7 +624,10 @@ export const mlService = {
 
     // Calculate simulated price change
     const currentMonth = new Date().getMonth() + 1;
-    const avgSeasonalFactor = Object.values(SEASONAL_FACTORS[currentMonth] || {}).reduce((a, b) => a + b, 0) / 7;
+    const seasonalValues = Object.values(SEASONAL_FACTORS[currentMonth] || {});
+    const avgSeasonalFactor = seasonalValues.length > 0
+      ? seasonalValues.reduce((a, b) => a + b, 0) / seasonalValues.length
+      : 1;
     const priceChange = Math.round((avgSeasonalFactor - 1) * 100);
 
     // Find top material
