@@ -1,5 +1,6 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { Analytics as VercelAnalytics } from '@vercel/analytics/react';
 import ProfileSetupModal from './components/ProfileSetupModal';
 import { AppProvider } from './context/AppContext';
 import { useAppContext } from './context/AppContext';
@@ -32,6 +33,7 @@ const App: React.FC = () => {
           </Routes>
           <Footer />
         </div>
+        <VercelAnalytics />
       </Router>
     </AppProvider>
   );
