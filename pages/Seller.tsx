@@ -385,7 +385,7 @@ const Seller: React.FC = () => {
                 <h4 className="font-bold text-sm uppercase tracking-widest text-white">AI Powered</h4>
               </div>
               <p className="text-sm text-gray-400">
-                ReWeave uses Gemini Nano to analyze your fabric's texture, weave, and composition instantly. Just upload a photo and watch the details fill in.
+                ReWeave analyzes your fabric's texture, weave, and composition instantly. Just upload a photo and watch the details fill in.
               </p>
             </div>
           </div>
