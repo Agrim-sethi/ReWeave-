@@ -21,26 +21,30 @@ const Home: React.FC = () => {
     <div className="relative">
       <header className="relative min-h-screen flex flex-col justify-center items-center px-4 sm:px-6 pt-24 pb-12">
         <div className="absolute inset-0 z-0">
-          <img alt="Rack of clothes showing fabric textures" className="w-full h-full object-cover opacity-40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWWxRPqKpt-BHWyT4o0tQP2PDUeu_SLyuJ6nEHxpM2HzumxgBS-WIqXyU1uMRam8tQN2Nl52pPMdxR7drZkhmtFHfBDzstlczTEBdETz1te8eNowHUYabX45JUf_C1CwLUsRX9V6R5jXLQNyzUVu1XDeufZ5dgCK9n5954iu8hXLXRjubLmIygEoIaH3bsPBsJGzjHbgsRBIfijvlTAux08ZwTtTEoDgaTFRuB1C3c1uxnwt79Mu8ZYWWL6c5WCMJX48TFime9" />
+          <img alt="Rack of clothes showing fabric textures" className="w-full h-full object-cover opacity-40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWWxRPqKpt-BHWyT4o0tQP2PDUeu_SLy[...]
           <div className="absolute inset-0 bg-gradient-to-b from-deep-charcoal/80 via-deep-charcoal/90 to-deep-charcoal"></div>
         </div>
         <div className="relative z-10 max-w-6xl mx-auto text-center space-y-8">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent-green/30 bg-accent-green/10 text-accent-green text-xs font-semibold tracking-wide uppercase mb-4 animate-fade-up">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent-green/30 bg-accent-green/10 text-accent-green text-xs font-semibold tracking-wide uppercase mb-4">
             <span className="w-2 h-2 rounded-full bg-accent-green animate-pulse"></span>
             Sustainable Textile Marketplace
           </div>
-          <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400">
-            <span className="text-primary inline-block animate-fade-up stagger-3">Turn surplus fabric into sustainable profit.</span>
+
+          <h1 className="mx-auto max-w-[1100px] text-white font-black leading-[0.82] tracking-[-0.06em] text-[clamp(3.5rem,8vw,11rem)]">
+            <span className="block">Turn surplus fabric</span>
+            <span className="block">into sustainable</span>
+            <span className="block">profit.</span>
           </h1>
+
           <p className="text-base sm:text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed animate-fade-up stagger-3">
             Connect mills, designers, and makers to give textiles a second life. Fast uploads, local matches, and measurable impact.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 animate-fade-up stagger-3">
-            <Link to="/seller" className="group px-8 py-4 bg-primary text-deep-charcoal font-bold text-lg rounded-full hover:bg-white hover:scale-105 transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(237,233,254,0.3)]">
+            <Link to="/seller" className="group px-8 py-4 bg-primary text-deep-charcoal font-bold text-lg rounded-full hover:bg-white hover:scale-105 transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.12)]">
               Start Weaving
               <span className="material-symbols-outlined text-xl transition-transform group-hover:translate-x-1">arrow_forward</span>
             </Link>
-            <Link to="/buyer" className="px-8 py-4 bg-white/5 border border-white/10 text-white font-medium text-lg rounded-full hover:bg-white/10 hover:scale-105 hover:border-white/30 transition-all backdrop-blur-sm">
+            <Link to="/buyer" className="px-8 py-4 bg-white/5 border border-white/10 text-white font-medium text-lg rounded-full hover:bg-white/10 hover:scale-105 hover:border-white/30 transition-all">
               View Marketplace
             </Link>
           </div>
@@ -61,10 +65,10 @@ const Home: React.FC = () => {
 
               <div className="space-y-6 sm:space-y-8 text-sm sm:text-base lg:text-lg text-gray-400 font-light leading-relaxed">
                 <p>
-                  The textile industry generates significant waste through end-of-line (EOL) fabric — small batches, discontinued designs, or irregular sizes left over at the end of production cycles.
+                  The textile industry generates significant waste through end-of-line (EOL) fabric — small batches, discontinued designs, or irregular sizes left over at the end of production cycle.
                 </p>
                 <p>
-                  These surplus fabrics are typically discarded, stored indefinitely (leading to mounting costs), or sold at heavily discounted rates, resulting in financial and environmental losses. Meanwhile, small designers, artisans, and independent creators often lack access to affordable, high-quality fabrics in small quantities.
+                  These surplus fabrics are typically discarded, stored indefinitely (leading to mounting costs), or sold at heavily discounted rates, resulting in financial and environmental losses.
                 </p>
               </div>
 
